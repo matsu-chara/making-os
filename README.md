@@ -6,5 +6,20 @@
 
 ```
 brew install nasm qemu bochs
+
+go get -u github.com/yamnikov-oleg/nasmfmt
 ```
 
+
+## development
+
+```
+# format
+nasmfmt **/*.s
+
+# check
+nasm -Xgnu -I. -o/dev/null src/**/*.s
+
+# assembly
+nasm -o foo.img src/bar/baz.s
+```
