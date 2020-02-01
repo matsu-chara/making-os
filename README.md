@@ -6,6 +6,9 @@
 
 ```
 brew install nasm qemu bochs
+
+# vscode
+# install `ASM Code Lens` extention.
 ```
 
 ## development
