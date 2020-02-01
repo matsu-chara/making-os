@@ -1,3 +1,7 @@
+.PHONY: check
+check:
+	find . -name "*.s" | xargs -I {} nasm -Xgnu -I. -o/dev/null {}
+
 .PHONY: compile
 compile:
 	nasm boot.s -o boot.img -l boot.lst
