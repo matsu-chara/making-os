@@ -14,9 +14,17 @@ brew install nasm qemu bochs
 ## development
 
 ```
-# check
-nasm -Xgnu -I. -o/dev/null src/**/*.s
+cd src/foo
 
-# assembly
-nasm -o foo.img src/bar/baz.s
+# check
+make check
+
+# build
+make mk
+
+# run by qemu
+make boot
+
+# run by bochs
+make box
 ```
