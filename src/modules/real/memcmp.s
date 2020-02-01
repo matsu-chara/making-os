@@ -3,9 +3,6 @@ memcmp:
         mov bp, sp
 
         ; save register
-        push bx
-        push cx
-        push dx
         push si
         push di
 
@@ -26,9 +23,6 @@ memcmp:
 
         pop di
         pop si
-        pop dx
-        pop cx
-        pop bx
 
         mov sp, bp
         pop bp
