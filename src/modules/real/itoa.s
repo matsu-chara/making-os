@@ -15,7 +15,7 @@ itoa:
         mov     si, [bp + 6]            ; dst = buffer address
         mov     cx, [bp + 8]            ; size = buffer size
 
-        mov     di, cx                  ; end of buffer
+        mov     di, si                  ; end of buffer
         add     di, cx                  ; dst = &dst[size - 1]
         dec     di
 
