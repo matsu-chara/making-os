@@ -8,7 +8,7 @@ build: clean
 
 .PHONY: clean
 clean:
-	rm boot.img boot.lst
+	rm -f boot.img boot.lst
 
 .PHONY: boot
 boot: build

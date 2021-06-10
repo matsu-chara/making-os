@@ -32,7 +32,7 @@ read_chs:
     mov ax, 0x0000                      ; AX = 0x0000;
     mov es, ax                          ; ES = セグメント
     mov bx, [bp + 8]                    ; BX = コピー先
-.10L                                    ; do {
+.10L:                                    ; do {
     mov ah, 0x02                        ;   AH = セクタ読み込み
     mov al, [bp + 6]                    ;   BX = コピー先
     int 0x13                            ;   CF = BIOS(0x13, 0x02)
@@ -46,7 +46,7 @@ read_chs:
     mov ax, 0                           ;   ret = 0
     dec word [bp - 2]                   ; }
     jnz .10L                            ;  while(--retry)
-.10E
+.10E:
     mov ah, 0                           ; AH = 0 // ステータス情報は破棄
 
     ; レジスタ復帰
