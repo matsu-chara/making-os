@@ -10,30 +10,30 @@ get_drive_param:
         push    di
 
         ; start
-        mov     si,   [bp + 4]
-        mov     ax,   0
-        mov     es,   ax
-        mov     di,   ax
-        mov     ah,   8
-        mov     dl,   [si + drive.no]
-        int     0x13
-.10Q:   jc      .10F
+        mov     si,   [bp + 4]              ; SI = バッファ
+        mov     ax,   0                     ; Disk Base Table Pointerの初期化
+        mov     es,   ax                    ; ES = 0
+        mov     di,   ax                    ; DI = 0
+        mov     ah,   8                     ; get derive parameters
+        mov     dl,   [si + drive.no]       ; dl = ドライブ番号   
+        int     0x13                        ; CF = BIOS(0x13, 8)
+.10Q:   jc      .10F                        ; if (0 == CF)    
 .10T:
-        mov     al,    cl
-        and     ax,    0x3F
-        shr     cl,    6
-        ror     cx,    8
+        mov     al,    cl                   ; AX = セクタ数    
+        and     ax,    0x3F                 ; 下位6bitのみ有効なのでandで取り出す
+        shr     cl,    6                    ; CX = シリンダ数  (shr = shift right)
+        ror     cx,    8                    ; (ror = rotate right)
         inc     cx
 
         movzx   bx,     dh
-        inc     bx
+        inc     bx                          ; BX = ヘッド数
 
-        mov     [si + drive.cyln],  cx
-        mov     [si + drive.head],  bx
-        mov     [si + drive.sect],  ax
+        mov     [si + drive.cyln],  cx      ; drive.syln = CX
+        mov     [si + drive.head],  bx      ; drive.head = BX
+        mov     [si + drive.sect],  ax      ; drive.sect = AX
         jmp     .10E
-.10F:
-        mov     ax, 0
+.10F:                                       ; else
+        mov     ax, 0                       ; AX = 0 (失敗）
 .10E:
         pop     di
         pop     si
