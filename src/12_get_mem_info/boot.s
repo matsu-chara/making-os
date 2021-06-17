@@ -126,16 +126,16 @@ stage_3rd:
         cdecl itoa, ax, .p3, 4, 16, 0b0100  ;   itoa(AX) // 上位アドレスを変換
         cdecl puts, .s2                     ;   puts(.s2) // アドレスを表示
                                             ; }
-.10E
+.10E:
         ; 無限ループ
         jmp $ 
 
 .s1 db "3rd stage...", 0x0A, 0x0D, 0
-.s2 db " Font Address="
-.s3 db " ACPI data="
 .p1 db "ZZZZ:"
 .p2 db "ZZZZ", 0x0A, 0x0D, 0
     db 0x0A, 0x0D, 0
+
+.s2 db " ACPI data="
 .p3 db "ZZZZ"
 .p4 db "ZZZZ", 0x0A, 0x0D, 0
 
