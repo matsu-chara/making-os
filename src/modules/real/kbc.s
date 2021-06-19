@@ -23,3 +23,32 @@ KBC_Data_Write:
     pop     bp
 
     ret
+
+KBC_Data_Read:
+    push    bp
+    mov     bp, sp
+
+    push    cx
+
+    mov     cx, 0
+.20L:
+    in      al, 0x64        ; AL = inp(0x64) // KBCステータス
+    test    al, 0x01        ; ZF = AL & 0x01 // 読み込み可能？
+    loopnz  .20L
+
+    cmp     cx, 0
+    jz      .20E
+
+    mov     ah, 0x00        ; AH = 0x00
+    in      al, 0x60        ; AL = inp(0x60)
+
+    mov     di, [bp + 4]     ; DI = ptr
+    mov     [di + 0], ax    ; DI[0] = AX
+.20E:
+    mov     ax, cx
+
+    pop     cx
+    mov     sp, bp
+    pop     bp
+
+    ret
