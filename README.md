@@ -20,7 +20,7 @@ cd src/foo
 make check
 
 # build
-make mk
+make build
 
 # run by qemu
 make boot
