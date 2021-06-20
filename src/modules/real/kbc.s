@@ -19,6 +19,7 @@ KBC_Data_Write:
     mov     ax, cx
 
     pop     cx
+
     mov     sp, bp
     pop     bp
 
@@ -29,12 +30,13 @@ KBC_Data_Read:
     mov     bp, sp
 
     push    cx
+    push	di
 
     mov     cx, 0
 .10L:
     in      al, 0x64        ; AL = inp(0x64) // KBCステータス
     test    al, 0x01        ; ZF = AL & 0x01 // 読み込み可能？
-    loopnz  .10L
+    loopz  .10L
 
     cmp     cx, 0
     jz      .20E
@@ -47,33 +49,37 @@ KBC_Data_Read:
 .20E:
     mov     ax, cx
 
+    pop	    di
     pop     cx
+
     mov     sp, bp
     pop     bp
 
     ret
+
 KBC_Cmd_Write:
-    push    bp
-    mov     bp, sp
+    push	bp
+    mov		bp, sp
 
-    push    cx
+    push	cx
 
-    mov     cx, 0
+    mov		cx, 0
 .10L:
-    in      al, 0x64        ; AL = inp(0x64) // KBCステータス
+    in		al, 0x64        ; AL = inp(0x64) // KBCステータス
     test    al, 0x02        ; ZF = AL & 0x02 // 書き込み可能？
-    loopnz  .10L
+    loopnz	.10L
 
-    cmp     cx, 0
-    jz      .20E
+    cmp		cx, 0
+    jz		.20E
 
-    mov     al, [bp + 4]    ; AL = コマンド
-    out     0x64, al        ; outp(0x64, AL)
+    mov		al, [bp + 4]    ; AL = コマンド
+    out    	0x64, al        ; outp(0x64, AL)
 .20E:
-    mov     ax, cx
+    mov		ax, cx
 
-    pop     cx
-    mov     sp, bp
-    pop     bp
+    pop		cx
+
+    mov		sp, bp
+    pop		bp
 
     ret
