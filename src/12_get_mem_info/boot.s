@@ -106,7 +106,7 @@ stage_2:
 .e0 db "Can't get drive parameter.", 0
 
 stage_3rd:
-        cdecl  puts, .s1
+        cdecl  puts, .s0
 
         ; プロテクトモードで使用するフォントはBIOSに内蔵されたものを利用する
         cdecl  get_font_adr, FONT
@@ -114,7 +114,7 @@ stage_3rd:
         ; フォントアドレスの表示
         cdecl itoa, word [FONT.seg], .p1, 4, 16, 0b0100
         cdecl itoa, word [FONT.off], .p2, 4, 16, 0b0100
-        cdecl puts, .s2
+        cdecl puts, .s1
 
         ; メモリ情報の取得と表示
         cdecl get_mem_info, ACPI_DATA       ; get_mem_info(&ACPI_DATA)
@@ -130,7 +130,8 @@ stage_3rd:
         ; 無限ループ
         jmp $ 
 
-.s1 db "3rd stage...", 0x0A, 0x0D, 0
+.s0 db "3rd stage...", 0x0A, 0x0D, 0
+.s1 db " Font Address="
 .p1 db "ZZZZ:"
 .p2 db "ZZZZ", 0x0A, 0x0D, 0
     db 0x0A, 0x0D, 0
