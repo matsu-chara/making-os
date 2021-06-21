@@ -4,11 +4,17 @@ check:
 
 .PHONY: build
 build: clean
-	nasm boot.s -o boot.img -l boot.lst
+	if [ -e kernel.s ]; then\
+		nasm boot.s -o boot.bin -l boot.lst;\
+		nasm kernel.s -o kernel.bin -l kernel.lst;\
+		cat boot.bin kernel.bin > boot.img;\
+	else\
+		nasm boot.s -o boot.img -l boot.lst;\
+	fi
 
 .PHONY: clean
 clean:
-	rm -f boot.img boot.lst
+	rm -f boot.bin boot.lst kernel.bin kernel.lst boot.img
 
 .PHONY: boot
 boot: build
