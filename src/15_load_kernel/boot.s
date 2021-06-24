@@ -54,6 +54,8 @@ BOOT:
 %include "../modules/real/puts.s"
 %include "../modules/real/reboot.s"
 %include "../modules/real/read_chs.s"
+%include "../modules/real/lba_chs.s"
+%include "../modules/real/read_lba.s"
 
 ; boot flag
     times 510 - ($ - $$) db 0x00    ; 先頭512バイトの終了
@@ -196,9 +198,7 @@ stage_4th:
         jmp     .10L
 .10E:
         cdecl   puts, .s3
-
-        ; 無限ループ
-        jmp $ 
+        jmp stage_5th
 
 .s0 db "4th stage...", 0x0A, 0x0D, 0
 .s1 db " A20 Gate Enabled.", 0x0A, 0x0D, 0
@@ -208,6 +208,22 @@ stage_4th:
 .e1 db "ZZ]", 0
 .key dw 0
 
-; パディング（今後作成するコード量を見越して8KBのファイルにしている）
-    times BOOT_SIZE - ($-$$) db 0
+stage_5th:
+        cdecl puts, .s0
+
+        ; read kernel
+        cdecl read_lba, BOOT, BOOT_SECT, KERNEL_SECT, BOOT_END
+        cmp   ax, KERNEL_SECT
+.10Q:   jz    .10E
+.10T:   cdecl puts, .e0
+        call  reboot
+.10E:
+        ; 無限ループ
+        jmp $ 
+
+.s0     db  "5th stage...", 0x0A, 0x0D, 0
+.e0     db " Failure load kernel...", 0x0A, 0x0D, 0
+
+        ; パディング（今後作成するコード量を見越して8KBのファイルにしている）
+        times BOOT_SIZE - ($-$$) db 0
 
