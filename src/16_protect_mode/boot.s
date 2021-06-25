@@ -235,11 +235,46 @@ stage_6th:
         mov ax, 0x0012          ; VGA 640x480
         int 0x10
 
-        ; 無限ループ
-        jmp $ 
+        jmp stage_7th
 
 .s0     db "6th stage...", 0x0A, 0x0D, 0x0A, 0x0D
         db " [Push SPACE key to protect mode...]", 0x0A, 0x0D, 0
+
+stage_7th:
+        cli
+
+        lgdt [GDTR]
+        lidt [IDTR]
+
+        mov eax, cr0
+        or  ax, 1
+        mov cr0, eax            ; プロテクトモードに移行するためにCR0レジスタにあるPEビットに１をセット
+        jmp $ + 2               ; 先読みをクリア
+
+        [BITS 32]
+        DB 0x66
+        jmp SEL_CODE:CODE_32
+
+CODE_32:
+        mov ax, SEL_DATA
+        mov ds, ax
+        mov es, ax
+        mov fs, ax
+        mov gs, ax
+        mov ss, ax
+
+        ; 無限ループ
+        jmp $
+
+
+ALIGN 4, db 0
+GDT:    dq 0x00_0000_000000_0000
+.cs:    dq 0x00_CF9A_000000_FFFF
+.ds:    dq 0x00_FF92_000000_FFFF
+.gdt_end:
+
+GDTR:   dw GDT.gdt_end - GDT - 1
+        dd GDT
 
 
         ; パディング（今後作成するコード量を見越して8KBのファイルにしている）
