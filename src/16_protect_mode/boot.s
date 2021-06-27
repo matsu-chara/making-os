@@ -240,22 +240,44 @@ stage_6th:
 .s0     db "6th stage...", 0x0A, 0x0D, 0x0A, 0x0D
         db " [Push SPACE key to protect mode...]", 0x0A, 0x0D, 0
 
+; グローバルディスクリプターテーブル
+ALIGN 4, db 0
+GDT:    dq 0x00_0000_000000_0000
+.cs:    dq 0x00_CF9A_000000_FFFF
+.ds:    dq 0x00_FF92_000000_FFFF
+.gdt_end:
+
+; コード用セレクタとデータ用セレクタ
+SEL_CODE    equ GDT.cs - GDT
+SEL_DATA   equ GDT.ds - GDT 
+
+; GDT (ディクリプタテーブルのリミットとアドレス)
+GDTR:   dw GDT.gdt_end - GDT - 1
+        dd GDT
+
+; IDT(疑似：割り込みを禁止にするもの)
+IDTR:  dw 0
+       dd 0
+
 stage_7th:
         cli
 
         lgdt [GDTR]
         lidt [IDTR]
 
+        ; プロテクトモードへ移行
         mov eax, cr0
         or  ax, 1
         mov cr0, eax            ; プロテクトモードに移行するためにCR0レジスタにあるPEビットに１をセット
         jmp $ + 2               ; 先読みをクリア
 
-        [BITS 32]
+[BITS 32]
         DB 0x66
         jmp SEL_CODE:CODE_32
 
+; 32ビットコード開始
 CODE_32:
+        ; セレクタ初期化
         mov ax, SEL_DATA
         mov ds, ax
         mov es, ax
@@ -263,18 +285,15 @@ CODE_32:
         mov gs, ax
         mov ss, ax
 
-        ; 無限ループ
-        jmp $
-
-
-ALIGN 4, db 0
-GDT:    dq 0x00_0000_000000_0000
-.cs:    dq 0x00_CF9A_000000_FFFF
-.ds:    dq 0x00_FF92_000000_FFFF
-.gdt_end:
-
-GDTR:   dw GDT.gdt_end - GDT - 1
-        dd GDT
+        ; カーネルを上位アドレスにコピー
+        mov ecx, (KERNEL_SIZE)/ 4           ; ECX = 4byte単位でコピー
+        mov esi, BOOT_END                   ; ESI // カーネル部
+        mov edi, KERNEL_LOAD                ; EDI // 上位メモリ
+        cld                                 ; DFクリア（＋方向）
+        rep movsd                           ; while(--ECX) *EDI++ = *ESI++
+        
+        ; カーネルの先頭にジャンプ
+        jmp KERNEL_LOAD
 
 
         ; パディング（今後作成するコード量を見越して8KBのファイルにしている）
