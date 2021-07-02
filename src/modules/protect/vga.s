@@ -36,5 +36,68 @@ vga_set_write_plane:
 
     mov     esp, ebp
     pop     ebp
+    ret
 
+vram_font_copy:
+    push    ebp
+    mov     ebp, esp
+
+    push	eax
+    push	ebx
+    push	ecx
+    push	edx
+    push	esi
+    push	edi
+
+    mov     esi, [ebp + 8]
+    mov     edi, [ebp + 12]
+    movzx   eax, byte [ebp + 16]
+    movzx   ebx, word [ebp + 20]
+
+    test    bh, al
+    setz    dh
+    dec     dh
+
+    test    bl, al
+    setz    dl
+    dec     dl
+
+    ; 16ドットフォントのコピー
+    cld
+
+    mov     ecx, 16
+
+.10L:
+    lodsb
+    mov     ah, al
+    not     ah
+
+    and     al, dl              ; 前景色 & フォント
+
+    test    ebx, 0x0010
+    jz      .11F
+    and     ah, [edi]
+    jmp     .11E
+
+.11F:
+    and     ah, dh
+
+.11E:
+    or      al, ah              ; AL = 背景 | 前景
+
+    mov     [edi], al           ; プレーンに書き込む
+
+    add     edi, 80
+    loop    .10L
+
+.10E:
+    pop		edi
+    pop		esi
+    pop		edx
+    pop		ecx
+    pop		ebx
+    pop		eax
+
+    mov     esp ebp
+    pop     ebp
     ret
