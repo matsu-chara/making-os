@@ -28,7 +28,7 @@ vga_set_write_plane:
     mov     ah, [ebp + 8]       ; AH = プレーンを選択
     and     ah, 0x0F            ; 余計なビットをマスク
     mov     al, 0x02            ; AL = 書き込みプレーンを指定
-    mov     dx, 0x03CE          ; DX = グラフィクス制御ポート
+    mov     dx, 0x03C4          ; DX = グラフィクス制御ポート
     out     dx, ax              ; ポート出力
 
     pop     edx
@@ -98,6 +98,6 @@ vram_font_copy:
     pop		ebx
     pop		eax
 
-    mov     esp ebp
+    mov     esp, ebp
     pop     ebp
     ret
