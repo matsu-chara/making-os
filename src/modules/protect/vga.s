@@ -101,3 +101,40 @@ vram_font_copy:
     mov     esp, ebp
     pop     ebp
     ret
+
+vram_bit_copy:
+    push    ebp
+    mov     ebp, esp
+
+    push	eax
+    push	ebx
+    push	edi
+
+    mov     edi, [ebp + 12]
+    movzx   eax, byte [ebp + 16]
+    movzx   ebx, word [ebp + 20]
+
+    test	bl, al
+    setz	bl
+    dec		bl
+
+    ; マスクデータの作成
+    mov		al, [ebp + 8]
+    mov		ah, al
+    not		ah
+
+    ; 現在値を取得
+    and		ah, [edi]
+    and		al, bl
+    or		al, ah
+
+    ; 出力
+    mov		[edi], al
+
+    pop		edi
+    pop		ebx
+    pop		eax
+
+    mov     esp, ebp
+    pop     ebp
+    ret
