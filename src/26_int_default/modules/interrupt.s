@@ -29,4 +29,14 @@ int_stop:
 .s3 db "   + 8:"
 .p3 db "________ ", 0
 .s4 db "   +12:"
-.p5 db "________ ", 0
+.p4 db "________ ", 0
+
+int_default:
+    pushf
+    push    cs
+    push    int_stop
+
+    mov     eax, .s0
+    iret
+
+.s0 db " <    STOP    >", 0

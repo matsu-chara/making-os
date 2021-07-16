@@ -27,11 +27,9 @@ kernel:
     cdecl   draw_rect, 400, 250, 150, 150, 0x05
     cdecl   draw_rect, 350, 400, 300, 100, 0x06
 
-    ; 時刻の表示
-.10L:
-    cdecl   rtc_get_time, RTC_TIME
-    cdecl   draw_time, 72, 0, 0x0700, dword [RTC_TIME]
-    jmp     .10L
+    push    0x11223344
+    pushf                   ; EFLAGSの保存 (pushfはフラグレジスタをpushする命令)
+    call    0x0008:int_default
 
     ; 処理の終了
     jmp $
@@ -53,5 +51,6 @@ RTC_TIME: dd 0
 %include "../modules/protect/itoa.s"
 %include "../modules/protect/rtc.s"
 %include "../modules/protect/draw_time.s"
+%include "modules/interrupt.s"
 
     times KERNEL_SIZE - ($ - $$) db 0
