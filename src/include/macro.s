@@ -24,10 +24,19 @@ endstruc
         mov     edi, VECT_BASE + (%1 * 8)
         mov     eax, %2
 
+        %if 3 == %0
+            mov [edi + 4], %3    ; フラグ
+        %endif
+
         mov     [edi + 0], ax
         shr     eax, 16
         mov     [edi + 6], ax
 
         pop     edi
         pop     eax
+%endmacro
+
+%macro  outp 2
+        mov     al, %2
+        out     %1, al
 %endmacro
