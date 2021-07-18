@@ -40,38 +40,3 @@ int_default:
     iret
 
 .s0 db " <    STOP    >", 0
-
-
-; 割り込みベクタの初期化
-ALIGN 4
-IDTR:   dw  8 * 256 - 1     ; idt_limit
-        dd  VECT_BASE       ; idt location
-
-; 割り込みテーブルを初期化
-init_int:
-    push    eax
-    push    ebx
-    push    ecx
-    push    edi
-
-    ; すべての割り込みにデフォルト処理を設定
-    lea     eax, [int_default]      ; EAX = 割り込み処理アドレス
-    mov     ebx, 0x0008_8E00        ; EBX = セグメントセレクタ
-    xchg    ax, bx                  ; 下位ワードを交換
-
-    mov     ecx, 256                ; 割り込みベクタ数
-    mov     edi, VECT_BASE          ; 割り込みベクターテーブル
-.10L:
-    mov     [edi + 0], ebx          ; [EDI + 0] = 割り込みディスクリプタ（下位）
-    mov     [edi + 4], eax          ; [EDI + 4] = 割り込みディスクリプタ（上位）
-    add     edi, 8                  ; EDI + 8
-    loop    .10L
-
-    lidt    [IDTR]          ; 割り込みディスクリプタテーブルをロード
-
-    pop     edi
-    pop     ecx
-    pop     ebx
-    pop     eax
-
-    ret
