@@ -60,7 +60,7 @@ init_int:
     xchg    ax, bx                  ; 下位ワードを交換
 
     mov     ecx, 256                ; 割り込みベクタ数
-    mov     edi, VECT_SIZE          ; 割り込みベクターテーブル
+    mov     edi, VECT_BASE          ; 割り込みベクターテーブル
 .10L:
     mov     [edi + 0], ebx          ; [EDI + 0] = 割り込みディスクリプタ（下位）
     mov     [edi + 4], eax          ; [EDI + 4] = 割り込みディスクリプタ（上位）
