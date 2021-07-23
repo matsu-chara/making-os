@@ -22,5 +22,25 @@ int_rtc:
     pop     es
     pop     ds
     popa
-    
+
     iret                                ; フラグレジスタも含めて復帰する命令
+
+rtc_int_en:
+    push    ebp
+    mov     ebp, esp
+
+    push    eax
+
+    outp    0x70, 0x0B
+
+    in      al, 0x71
+    or      al, [ebp + 8]
+
+    out     0x71, al
+
+    pop     eax
+
+    mov     esp, ebp
+    pop     ebp
+
+    ret
