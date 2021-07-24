@@ -40,3 +40,12 @@ endstruc
         mov     al, %2
         out     %1, al
 %endmacro
+
+%define RING_ITEM_SIZE  (1 << 4)
+%define RING_INDEX_MASK (RING_ITEM_SIZE - 1)
+
+struc ring_buff
+    .rp     resd    1
+    .wp     resd    1
+    .item   resb    RING_ITEM_SIZE
+endstruc
