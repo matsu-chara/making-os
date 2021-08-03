@@ -1,3 +1,3 @@
-.PHONY: ci
+gPHONY: ci
 ci:
-	find "./src/" -maxdepth 1 -type d | grep "\d\d_*" | sort -n | xargs -I {} sh -c 'cd {}; make build'
+	find "." -mindepth 3 -maxdepth 3 -name Makefile | sort -n | xargs -I {} sh -c 'cd $$(dirname {}); make build'
