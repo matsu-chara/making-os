@@ -1,3 +1,3 @@
 .PHONY: ci
 ci:
-	find ./src/ -type d -depth 1 | grep "\d\d_*" | sort -n | xargs -I {} sh -c 'cd {}; make build'
+	find "./src/" -maxdepth 1 -type d | grep "\d\d_*" | sort -n | xargs -I {} sh -c 'cd {}; make build'
