@@ -67,3 +67,4 @@ endstruc
 
     pop     edi
     pop     eax
+%endmacro
