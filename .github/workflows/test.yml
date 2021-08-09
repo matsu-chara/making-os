@@ -12,4 +12,3 @@ jobs:
       - uses: ilammy/setup-nasm@v1
       - run: |
           make ci
-

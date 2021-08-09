@@ -100,8 +100,8 @@ draw_line:
 
 .50E:
     pop		edi
-    pop     esi
-    pop     edx
+    pop		esi
+    pop		edx
     pop		ecx
     pop		ebx
     pop		eax
