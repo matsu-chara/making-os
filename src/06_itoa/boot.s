@@ -21,7 +21,7 @@ ipl:
     mov ss, ax
     mov sp, BOOT_LOAD       ; 0x7C00
     sti                     ; set intrrupt flag -- permit intrrupt (BIOS sets BOOT_DRIVE to dl)
-    
+
     mov [BOOT.DRIVE], dl    ; save boot drive
 
     ; print string

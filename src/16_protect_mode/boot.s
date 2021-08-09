@@ -21,7 +21,7 @@ ipl:
     mov ss, ax
     mov sp, BOOT_LOAD       ; 0x7C00
     sti                     ; set intrrupt flag -- permit intrrupt (BIOS sets BOOT_DRIVE to dl)
-    
+
     mov [BOOT + drive.no], dl    ; save boot drive
 
     ; print string
@@ -50,7 +50,7 @@ BOOT:
         at  drive.sect,     dw  2
     iend
 
-; module 
+; module
 %include "../modules/real/puts.s"
 %include "../modules/real/reboot.s"
 %include "../modules/real/read_chs.s"
@@ -249,7 +249,7 @@ GDT:    dq 0x00_0000_000000_0000
 
 ; コード用セレクタとデータ用セレクタ
 SEL_CODE    equ GDT.cs - GDT
-SEL_DATA   equ GDT.ds - GDT 
+SEL_DATA   equ GDT.ds - GDT
 
 ; GDT (ディクリプタテーブルのリミットとアドレス)
 GDTR:   dw GDT.gdt_end - GDT - 1
@@ -291,7 +291,7 @@ CODE_32:
         mov edi, KERNEL_LOAD                ; EDI // 上位メモリ
         cld                                 ; DFクリア（＋方向）
         rep movsd                           ; while(--ECX) *EDI++ = *ESI++
-        
+
         ; カーネルの先頭にジャンプ
         jmp KERNEL_LOAD
 

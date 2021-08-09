@@ -23,7 +23,7 @@ kernel:
     cdecl   draw_str, 25, 14, 0x010F, .s0
 
     cdecl   init_int
-    set_vect 0x00, int_zero_div 
+    set_vect 0x00, int_zero_div
 
     ; 0除算
     mov     al, 0

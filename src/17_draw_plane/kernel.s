@@ -59,7 +59,7 @@ kernel:
     mov     esi, 'A'                        ; ESI = 文字コード
     shl     esi, 4                          ; ESI *= 16
     add     esi, [FONT_ADR]                 ; ESI = FONT_ADR[文字コード]
-  
+
     mov     edi, 2
     shl     edi, 8
     lea     edi, [edi * 4 + edi + 0xA_0000]

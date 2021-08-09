@@ -15,11 +15,11 @@ get_drive_param:
         mov     es,   ax                    ; ES = 0
         mov     di,   ax                    ; DI = 0
         mov     ah,   8                     ; get derive parameters
-        mov     dl,   [si + drive.no]       ; dl = ドライブ番号   
+        mov     dl,   [si + drive.no]       ; dl = ドライブ番号
         int     0x13                        ; CF = BIOS(0x13, 8)
-.10Q:   jc      .10F                        ; if (0 == CF)    
+.10Q:   jc      .10F                        ; if (0 == CF)
 .10T:
-        mov     al,    cl                   ; AX = セクタ数    
+        mov     al,    cl                   ; AX = セクタ数
         and     ax,    0x3F                 ; 下位6bitのみ有効なのでandで取り出す
         shr     cl,    6                    ; CX = シリンダ数  (shr = shift right)
         ror     cx,    8                    ; (ror = rotate right)

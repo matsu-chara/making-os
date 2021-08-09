@@ -7,7 +7,7 @@ ring_rd:
     push    edi
 
     ; 引数
-    mov     esi, [ebp + 8]      ; ESI = リングバッファ 
+    mov     esi, [ebp + 8]      ; ESI = リングバッファ
     mov     edi, [ebp + 12]     ; EDI = データアドレス
 
     ; 読み込み位置を確認
@@ -44,7 +44,7 @@ ring_wr:
     push    esi
 
     ; 引数
-    mov     esi, [ebp + 8]      ; ESI = リングバッファ 
+    mov     esi, [ebp + 8]      ; ESI = リングバッファ
 
     ; 書き込み位置を確認
     mov     eax, 0

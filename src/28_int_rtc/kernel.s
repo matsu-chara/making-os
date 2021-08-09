@@ -16,7 +16,7 @@ kernel:
     ; 初期化
     cdecl   init_int
     cdecl   init_pic
-    set_vect 0x00, int_zero_div 
+    set_vect 0x00, int_zero_div
     set_vect 0x28, int_rtc              ; 0x28はスレーブPICの割り込みベクタの開始位置
 
     ; デバイスの割り込み許可

@@ -21,7 +21,7 @@ ipl:
     mov ss, ax
     mov sp, BOOT_LOAD       ; 0x7C00
     sti                     ; set intrrupt flag -- permit intrrupt (BIOS sets BOOT_DRIVE to dl)
-    
+
     mov [BOOT + drive.no], dl    ; save boot drive
 
     ; print string
@@ -50,7 +50,7 @@ BOOT:
         at  drive.sect,     dw  2
     iend
 
-; module 
+; module
 %include "../modules/real/puts.s"
 %include "../modules/real/reboot.s"
 %include "../modules/real/read_chs.s"
@@ -128,7 +128,7 @@ stage_3rd:
                                             ; }
 .10E:
         ; 無限ループ
-        jmp $ 
+        jmp $
 
 .s0 db "3rd stage...", 0x0A, 0x0D, 0
 .s1 db " Font Address="

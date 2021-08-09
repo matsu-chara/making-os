@@ -21,7 +21,7 @@ ipl:
     mov ss, ax
     mov sp, BOOT_LOAD       ; 0x7C00
     sti                     ; set intrrupt flag -- permit intrrupt (BIOS sets BOOT_DRIVE to dl)
-    
+
     mov [BOOT.DRIVE], dl    ; save boot drive
 
     ; print string
@@ -35,7 +35,7 @@ ipl:
     mov dl, [BOOT.DRIVE]    ; DL = ドライブ番号
     mov bx, 0x7c00 + 512    ; BX = オフセット
     int 0x13                ; if (CF = BIOS(0x13, 0x02))
-.10Q: jnc .10E              ; {    
+.10Q: jnc .10E              ; {
 .10T: cdecl puts, .e0       ;   puts(.e0);
     call reboot             ;   reboot();
 .10E:
