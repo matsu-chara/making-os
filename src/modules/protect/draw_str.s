@@ -20,7 +20,11 @@ draw_str:
         cmp     al, 0                   ; null文字かどうか比較
         je      .10E
 
+%ifdef  USE_SYSTEM_CALL
+        int     0x81
+%else
         cdecl   draw_char, ecx, edx, ebx, eax
+%endif
 
         ; 列を加算。ただし80文字ごとに行を加算し列を0にする。行が30行以上の場合は行を0リセット
         inc     ecx
