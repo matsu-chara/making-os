@@ -83,3 +83,22 @@ endstruc
     pop     edi
     pop     eax
 %endmacro
+
+struc rose
+    .x0         resd    1
+    .y0         resd    1
+    .x1         resd    1
+    .y1         resd    1
+
+    .n          resd    1
+    .d          resd    1
+
+    .color_x    resd    1
+    .color_y    resd    1
+    .color_z    resd    1
+    .color_s    resd    1
+    .color_f    resd    1
+    .color_b    resd    1
+
+    .title      resb    16
+endstruc
